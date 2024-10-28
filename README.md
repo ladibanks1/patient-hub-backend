@@ -17,41 +17,42 @@ Patient Hub is a health app that connects patients with hospitals and doctors, p
 - Real-Time Communication: Socket.io for chat and notifications
 
 # Getting Started
+  1. Clone the repository for the Backend:
+     ```cmd
+      git clone https://github.com/ladibanks/patient-hub-backend.git
+      cd patient-hub
+      ```
+  2. Clone the repository for the Frontend:
+       ```cmd
+      git clone https://github.com/ladibanks/patient-hub-frontend.git
+      cd patient-hub
+      ```
+  4. Install dependencies for both the Frontend And the Backend:
+      ```cmd
+      npm install
+      ```
+  4. Run the app for the Frontend:
+       ```cmd
+         npm run dev
+       ```
+  5. Run the app for the Backend:
+       ```cmd
+         npm start
+       ```
 
-1. Clone the repository for the Backend:
-git clone https://github.com/ladibanks/atient-hub-.git
-cd patient-hub
+# Folder Structure For The Backend
+  - /config - Configuration for database and authentication
+  - /services - Handle the database Queries
+  - /routes - Handle all express Routing
+  - /utils - contains resuable function
+  - /model - Provides the database Schema
+  - /controllers - handle request and response of the server
+  - /middleware - The server middleware
 
+# Contributing
 
-2. Install dependencies:
+ We welcome contributions! Please fork this repository and submit a pull request.
 
-npm install
-
-
-3. Run the app:
-
-npm start
-
-
-
-Folder Structure
-
-/client - React frontend
-
-/server - Express backend and Mongoose models
-
-/config - Configuration for database and authentication
-
-
-Contributing
-
-We welcome contributions! Please fork this repository and submit a pull request.
-
-License
+# License
 
 This project is licensed under the MIT License.
-
-
----
-
-This README gives a clear and organized overview for anyone looking to understand or contribute to "Patient Hub." Let me know if you'd like further customization!
