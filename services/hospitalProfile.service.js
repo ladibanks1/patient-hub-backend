@@ -1,7 +1,7 @@
 import databaseErrors from "../utils/databaseErrors.js";
 import hospitalModel from "../models/hospital.model.js";
 import staffModel from "../models/staff.model.js";
-import patientModel from "../models/patient.model.js";
+import appointmentService from "./appointment.service.js";
 
 const profile = async (id) => {
   try {
@@ -44,16 +44,13 @@ const deleteProfile = async (id) => {
       throw { code: 404, message: "Staff not found" };
       }
     });
-    // Remove the hospital from the Patients
-    doc.patients.forEach(async (patient) => {
-      try {
-        await patientModel.findByIdAndUpdate(patient, {
-          $pull : {hospitals : doc._id}
-        });
-      } catch (error) {
-      throw { code: 404, message: "Patient not found" };
-      }
+
+    // Remove the hospital from the Appointments, Patients and Staffs
+    doc.appointments.forEach(async (appointmentId) => {
+      await appointmentService.deleteAppointment(appointmentId);
     });
+
+
     return doc;
   } catch (error) {
     const message = databaseErrors(error);
