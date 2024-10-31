@@ -1,6 +1,6 @@
-export default class ErrorMessage extends Error{
+export default class ErrorMessage{
     constructor(message, statusCode ){
-        super(message);
+        this.message = message
         this.statusCode = statusCode;
     }
 }
