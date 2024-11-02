@@ -41,7 +41,7 @@ const deleteProfile = async (id) => {
       try {
         await staffModel.findByIdAndDelete(staff);
       } catch (error) {
-      throw { code: 404, message: "Staff not found" };
+        throw { code: 404, message: "Staff not found" };
       }
     });
 
@@ -50,7 +50,6 @@ const deleteProfile = async (id) => {
       await appointmentService.deleteAppointment(appointmentId);
     });
 
-
     return doc;
   } catch (error) {
     const message = databaseErrors(error);
@@ -58,4 +57,35 @@ const deleteProfile = async (id) => {
     throw { message, statusCode };
   }
 };
-export default { profile, updateProfile, deleteProfile };
+
+const rateHospital = async (id, ratings) => {
+  try {
+    if (ratings) {
+      const rating = await hospitalModel
+        .findByIdAndUpdate(
+          id,
+          {
+            $push: {
+              ratings,
+            },
+          },
+          {
+            runValidators: true,
+          }
+        )
+        .select("rating");
+
+      return rating;
+    }
+
+    throw {
+      message: "Kindly rate the hospital to help improve the app",
+      statusCode: 400,
+    };
+  } catch (error) {
+    const message = databaseErrors(error);
+    const statusCode = error?.code || 400;
+    throw { message, statusCode };
+  }
+};
+export default { profile, updateProfile, deleteProfile, rateHospital };

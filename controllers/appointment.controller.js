@@ -71,9 +71,7 @@ const appointmentCompleted = async (req, res, next) => {
 const deleteAppointment = async (req, res, next) => {
   try {
     const appointmentId = req.params.id;
-    const isDeleted = await appointmentService.deleteAppointment(
-      appointmentId
-    );
+    const isDeleted = await appointmentService.deleteAppointment(appointmentId);
     res.status(200).json({
       message: "Appointment Completed",
       data: isDeleted,
@@ -82,6 +80,38 @@ const deleteAppointment = async (req, res, next) => {
     const err = new ErrorMessage(error.message, error.statusCode || 400);
     next(err);
   }
+};
+
+// Reschedule Appointment
+const rescheduleAppointment = async (req, res, next) => {
+  try {
+    const appointmentId = req.params.id;
+    const appointmentDate = req.query.date;
+    if (appointmentDate) {
+      const isRescheduled = await appointmentService.rescheduleAppointment(
+        appointmentId,
+        appointmentDate
+      );
+      res.status(200).json({
+        message: "Appointment Rescheduled",
+        data: isRescheduled,
+      });
+    }else{
+      throw {message : "Date is not Provided"  , statusCode : 400}
+    }
+  } catch (error) {
+    const err = new ErrorMessage(error.message, error.statusCode || 400);
+    next(err);
+  }
+};
+
+const getAllAppointment = async(req , res , next) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+
 }
 
 export default {
@@ -90,4 +120,6 @@ export default {
   cancelAppointment,
   appointmentCompleted,
   deleteAppointment,
+  rescheduleAppointment,
+  getAllAppointment
 };

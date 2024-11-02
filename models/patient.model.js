@@ -51,6 +51,14 @@ const patientSchema = new Schema({
   },
   DOB: {
     type: Date,
+    validate: {
+      validator: function(value){
+        let date = new Date(value).getTime()
+        if(date > Date.now()) return false
+        return true
+      },
+      message: (props) => `Date of birth is cannot be ahead of current date`
+    },
     required: [true, "Please specify your date of birth"],
   },
   picture: {

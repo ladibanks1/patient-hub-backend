@@ -63,7 +63,6 @@ const cancelAppointment = async (appointmentId) => {
   }
 };
 
-
 // Confirm Appointment
 const confirmAppointment = async (appointmentId) => {
   try {
@@ -89,7 +88,6 @@ const confirmAppointment = async (appointmentId) => {
   }
 };
 
-
 const appointmentCompleted = async (appointmentId) => {
   try {
     const isCompleted = await appointmentModel
@@ -112,14 +110,14 @@ const appointmentCompleted = async (appointmentId) => {
     const statusCode = error?.statusCode;
     throw { message, statusCode };
   }
-}
-
+};
 
 const deleteAppointment = async (appointmentId) => {
   try {
     // Delete the appointment
     const isDeleted = await appointmentModel.findByIdAndDelete(appointmentId);
-    if (isDeleted === null) throw { message: "Appointment Not Found", statusCode: 404 };
+    if (isDeleted === null)
+      throw { message: "Appointment Not Found", statusCode: 404 };
 
     // Remove the appointment from the patient
     await patientModel.findByIdAndUpdate(isDeleted.patient, {
@@ -129,8 +127,8 @@ const deleteAppointment = async (appointmentId) => {
         hospitals: isDeleted.hospital,
       },
     });
-     // Remove the appointment to the doctor
-     await staffModel.findByIdAndUpdate(isDeleted.doctor, {
+    // Remove the appointment to the doctor
+    await staffModel.findByIdAndUpdate(isDeleted.doctor, {
       $pull: {
         appointments: isDeleted._id,
         patients: isDeleted.patient,
@@ -150,11 +148,36 @@ const deleteAppointment = async (appointmentId) => {
     const statusCode = error?.statusCode;
     throw { message, statusCode };
   }
-}
+};
+
+// Reschedule Appoinment
+const rescheduleAppointment = async (appointmentId, appointmentDate) => {
+  try {
+    const isRescheduled = await appointmentModel.findByIdAndUpdate(
+      appointmentId,
+      {
+        status: "Rescheduled",
+        appointment_date: appointmentDate,
+      },
+      {
+        runValidators: true,
+        new: true,
+      }
+    ).select("status appointment_date")
+    return isRescheduled;
+  } catch (error) {
+    const message = databaseErrors(error);
+    const statusCode = error?.statusCode;
+    throw { message, statusCode };
+  }
+};
+
+// Export All Functions
 export default {
   bookAppointment,
   cancelAppointment,
   confirmAppointment,
   appointmentCompleted,
   deleteAppointment,
+  rescheduleAppointment,
 };

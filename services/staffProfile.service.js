@@ -38,19 +38,11 @@ const deleteProfile = async (id) => {
     await hospitalService.updateProfile(doc.hospital_id, {
       $pull: { staffs: doc._id },
     });
-    /* // Remove the staff from the patients
-    doc.patients.forEach(async (patientId) => {
-      await patientService.updateProfile(patientId, {
-        $pull : {doctors : doc._id}
-      });
-    }); */
-
 
     // Remove the staff from the appointments , patients and hospital
     doc.appointments.forEach(async (appointmentId) => {
       await appointmentService.deleteAppointment(appointmentId);
     });
-
 
     return doc;
   } catch (error) {
@@ -59,4 +51,33 @@ const deleteProfile = async (id) => {
     throw { message, statusCode };
   }
 };
-export default { profile, updateProfile, deleteProfile };
+
+const rateStaff = async (id, ratings) => {
+  try {
+    if (ratings) {
+      const rating = await staffModel
+        .findByIdAndUpdate(
+          id,
+          {
+            $push: {
+              ratings,
+            },
+          },
+          {
+            runValidators: true,
+          }
+        )
+        .select("rating");
+      return rating;
+    }
+    throw {
+      message: "Kindly rate the hospital to help improve the app",
+      statusCode: 400,
+    };
+  } catch (error) {
+    const message = databaseErrors(error);
+    const statusCode = error?.code || 400;
+    throw { message, statusCode };
+  }
+};
+export default { profile, updateProfile, deleteProfile, rateStaff };

@@ -83,7 +83,7 @@ const hospitalSchema = new Schema({
             if(value <= 5) return true
             return false
         },
-        message: ({value}) => `${value} must not be greater than five(5)`
+        message: () => `Rating must not be greater than five(5)`
       }
     },
   ],

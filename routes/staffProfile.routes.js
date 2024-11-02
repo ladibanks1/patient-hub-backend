@@ -6,5 +6,6 @@ const router = Router();
 router.get("/profile/:id" , staff.profile);
 router.put("/update-profile/:id", staff.updateProfile);
 router.delete("/delete-profile/:id", staff.deleteProfile);
+router.get("/rate-staff/:id" , staff.rateStaff)
 
 export default router;
