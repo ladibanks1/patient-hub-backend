@@ -105,14 +105,6 @@ const rescheduleAppointment = async (req, res, next) => {
   }
 };
 
-const getAllAppointment = async(req , res , next) => {
-  try {
-    
-  } catch (error) {
-    
-  }
-
-}
 
 export default {
   bookAppointment,
@@ -121,5 +113,4 @@ export default {
   appointmentCompleted,
   deleteAppointment,
   rescheduleAppointment,
-  getAllAppointment
 };

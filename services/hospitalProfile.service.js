@@ -88,4 +88,24 @@ const rateHospital = async (id, ratings) => {
     throw { message, statusCode };
   }
 };
-export default { profile, updateProfile, deleteProfile, rateHospital };
+
+const getHospitalDoctors = async (id) => {
+  try {
+    const doctors = await staffModel.find({$and: [{ hospital_id : id }, {position : {
+      $regex: /doctor/i
+    }}]});
+    if(!doctors) throw { code: 404, message: "Doctors not found" };
+      return doctors;
+  } catch (error) {
+    const message = databaseErrors(error);
+    const statusCode = error?.code || 400;
+    throw { message, statusCode };
+  }
+};
+export default {
+  profile,
+  updateProfile,
+  deleteProfile,
+  rateHospital,
+  getHospitalDoctors,
+};

@@ -67,4 +67,19 @@ const rateHospital = async (req, res, next) => {
   }
 };
 
-export default { profile, updateProfile, deleteProfile, rateHospital };
+const getHospitalDoctors = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const doctors = await hospitalService.getHospitalDoctors(id);
+    res.status(200).json({
+      data: doctors,
+      message: "Doctors Found",
+    });
+  } catch (error) {
+    const message = error.message;
+    const statusCode = error?.statusCode || 404;
+    const err = new ErrorMessage(message, statusCode);
+    next(err);
+  }
+};
+export default { profile, updateProfile, deleteProfile, rateHospital , getHospitalDoctors };
