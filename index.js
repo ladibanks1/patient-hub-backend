@@ -24,6 +24,9 @@ import hospitalRoute from "./routes/hospitalProfile.routes.js";
 import staffRoute from "./routes/staffProfile.routes.js";
 import appointmentRoute from "./routes/appointment.routes.js";
 
+// import Chat Application
+import chatApplication from "./sockets/chatApplication.js";
+
 // Secret Key
 const PORT = process.env.PORT || 8000;
 const ORIGIN = process.env.ORIGIN;
@@ -35,12 +38,14 @@ const app = express();
 app.use(express.json());
 
 // WebSocket Server
-const server = http.createServer(app);
-
+const server = app.listen(PORT, async () => {
+  console.log(`server is running on port ${PORT}`);
+  await Connection();
+});
 // Socket.io Server
 const io = new Server(server, {
   cors: {
-    origin: ORIGIN,
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
@@ -78,6 +83,13 @@ app.use("/staff", staffRoute);
 // Appointment Routes
 app.use("/appointment", appointmentRoute);
 
+// Socket.io Connection & Chat Application
+io.on("connection", (socket) => {
+  io.setMaxListeners(10);
+  console.log("A user connected" , socket.id);
+  chatApplication(io , socket);
+});
+
 // Not Found Route
 app.use(notFound);
 
@@ -85,10 +97,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Socket.io Connection
-server.listen(PORT, async () => {
-  console.log(`server is running on port ${PORT}`);
-  await Connection();
-});
+
 
 // Handle Disconnection
 process.on("SIGINT", async () => {
