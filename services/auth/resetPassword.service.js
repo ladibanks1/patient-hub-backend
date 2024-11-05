@@ -26,11 +26,11 @@ const forgetUserPassword = async (email) => {
 const resetUserPassword = async (email, pass) => {
   try {
     if (!pass) throw new ErrorMessage("Password is not provided", 401);
-    const password = pass.trim()
-    if(password.length < 6) throw new ErrorMessage("Password must be at least 6 characters" , 401) 
+    const password = pass.trim();
+    if (password.length < 6)  throw new ErrorMessage("Password must be at least 6 characters", 401);
     const hospital = await hospitalModel.findOneAndUpdate(
       { email },
-      { password },
+      { $set: { password } },
       {
         runValidators: true,
         new: true,
@@ -39,7 +39,7 @@ const resetUserPassword = async (email, pass) => {
 
     const patient = await patientModel.findOneAndUpdate(
       { email },
-      { password },
+      { $set: { password } },
       {
         runValidators: true,
         new: true,
@@ -48,7 +48,7 @@ const resetUserPassword = async (email, pass) => {
 
     const staff = await staffModel.findOneAndUpdate(
       { email },
-      { password },
+      { $set: { password } },
       {
         runValidators: true,
         new: true,

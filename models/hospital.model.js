@@ -45,7 +45,10 @@ const hospitalSchema = new Schema({
   },
   email: {
     type: String,
-    validate: [emailValidator, "Email is not a valid  gmail account, Gmail is required"],
+    validate: [
+      emailValidator,
+      "Email is not a valid  gmail account, Google Account is required",
+    ],
     required: [true, "Please enter the hospital email"],
     trim: true,
     unique: true,
@@ -78,35 +81,41 @@ const hospitalSchema = new Schema({
   ratings: [
     {
       type: Number,
-      validate : {
-        validator: function(value){
-            if(value <= 5) return true
-            return false
+      validate: {
+        validator: function (value) {
+          if (value <= 5) return true;
+          return false;
         },
-        message: () => `Rating must not be greater than five(5)`
-      }
+        message: () => `Rating must not be greater than five(5)`,
+      },
     },
   ],
 });
 
 hospitalSchema.pre("save", async function (next) {
   // Hashing of Password
-  const hashedPassword = await hashPassword(this.password);
-  this.password = hashedPassword;
-  next();
+  try {
+    const hashedPassword = await hashPassword(this.password);
+    this.password = hashedPassword;
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
-
 
 hospitalSchema.pre("findOneAndUpdate", async function (next) {
   // Hashing updated Password
   const update = this.getUpdate();
   if (update) {
-    const hashedPassword = await hashPassword(update.password);
-    update.password = hashedPassword;
-    next();
+    try {
+      const hashedPassword = await hashPassword(update.password);
+      update.password = hashedPassword;
+      next();
+    } catch (error) {
+      next(error);
+    }
   }
 });
-
 
 const hospitalModel = model("Hospital", hospitalSchema);
 export default hospitalModel;

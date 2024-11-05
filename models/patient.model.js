@@ -21,7 +21,10 @@ const patientSchema = new Schema({
   },
   email: {
     type: String,
-    validate: [emailValidator, "Email is not a valid  gmail account, Gmail is required"],
+    validate: [
+      emailValidator,
+      "Email is not a valid  gmail account, Gooogle Account is required",
+    ],
     required: [true, "Please enter your email"],
     trim: true,
     lowercase: true,
@@ -42,29 +45,31 @@ const patientSchema = new Schema({
     required: [true, "Please enter your phone number"],
     trim: true,
     validate: {
-      validator: function(value) {
+      validator: function (value) {
         return /^(\+234|0)\d{10}$/i.test(value);
       },
-      message: props => `${props.value} is not a valid Nigerian phone number!`
+      message: (props) =>
+        `${props.value} is not a valid Nigerian phone number!`,
     },
-    unique : true
+    unique: true,
   },
   DOB: {
     type: Date,
     validate: {
-      validator: function(value){
-        let date = new Date(value).getTime()
-        if(date > Date.now()) return false
-        return true
+      validator: function (value) {
+        let date = new Date(value).getTime();
+        if (date > Date.now()) return false;
+        return true;
       },
-      message: (props) => `Date of birth is cannot be ahead of current date`
+      message: (props) => `Date of birth is cannot be ahead of current date`,
     },
     required: [true, "Please specify your date of birth"],
   },
   picture: {
     type: String,
     required: [true, "Please upload your picture"],
-    default: "https://res.cloudinary.com/ladibanks1/image/upload/v1730287488/Patient_Hub/jhjonrorgr9auwi9fvf0.png",
+    default:
+      "https://res.cloudinary.com/ladibanks1/image/upload/v1730287488/Patient_Hub/jhjonrorgr9auwi9fvf0.png",
   },
   gender: {
     type: String,
@@ -94,33 +99,39 @@ const patientSchema = new Schema({
     {
       type: SchemaTypes.ObjectId,
       ref: "Hospital",
-    }
-  ]
+    },
+  ],
 });
 
-patientSchema.virtual("full_name").get(function(){
-    return this.first_name + " " + this.last_name
-})
+patientSchema.virtual("full_name").get(function () {
+  return this.first_name + " " + this.last_name;
+});
 
-
-patientSchema.pre("save" , async function(next){
+patientSchema.pre("save", async function (next) {
   // Hashing password
-  const hashedPassword = await hashPassword(this.password)
-  this.password = hashedPassword
-  next()
-})
+  try {
+    const hashedPassword = await hashPassword(this.password);
+    this.password = hashedPassword;
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
-patientSchema.pre("findOneAndUpdate" , async function(next){
+patientSchema.pre("findOneAndUpdate", async function (next) {
   // Hashing Updated password
   const update = this.getUpdate();
-  
+
   if (update) {
-    const hashedPassword = await hashPassword(update.password);
-    update.password = hashedPassword;
-    next();
+    try {
+      const hashedPassword = await hashPassword(update.password);
+      update.password = hashedPassword;
+      next();
+    } catch (error) {
+      next(error);
+    }
   }
-})
+});
 
-
-const patientModel = model("Patient" , patientSchema)
+const patientModel = model("Patient", patientSchema);
 export default patientModel;

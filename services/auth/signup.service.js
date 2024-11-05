@@ -32,7 +32,7 @@ const registerStaff = async (data) => {
     // Create The staff
     const createStaff = await staffModel.create(data);
 
-    // Add Create Staff to The hospital
+    // Add the Created Staff to The hospital
     await hospitalModel.findByIdAndUpdate(createStaff.hospital_id, {
       $push: { staffs: createStaff._id },
     });

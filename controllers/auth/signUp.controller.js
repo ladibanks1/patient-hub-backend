@@ -46,11 +46,11 @@ const patientSignIn = async (req, res, next) => {
 const staffSignIn = async (req, res, next) => {
   const body = req.body;
   try {
-    const patientDetails = {
+    const staffDetails = {
       ...body,
       picture: req.file?.path,
     };
-    const created = await authService.registerStaff(patientDetails);
+    const created = await authService.registerStaff(staffDetails);
     const token = getToken({ id: created._id }); /* Token Creation */
     res.status(201).json({
       token,

@@ -11,12 +11,14 @@ const resetPasswordMail = (email, token) => {
 
   transporter.sendMail({
     to: email,
-    subject: "Reset Password",
+    subject: "Password Reset Request",
     html: `
-            <h1>Your Password Reset Link</h1> 
-            <p>Click the link below to reset your password</p>
-            <a href="http://localhost:4000/reset-password/${token}">Reset Password</a>
-        `,
+      <h1>Password Reset Request</h1>
+      <p>We received a request to reset your password. Click the link below to choose a new password:</p>
+      <a href="http://localhost:4000/auth/reset-password/${token}">Reset Password</a>
+      <p>If you did not request a password reset, please ignore this email or contact support if you have questions.</p>
+      <p>Thank you,<br/>The Patient Hub Team</p>
+    `,
   });
 };
 
