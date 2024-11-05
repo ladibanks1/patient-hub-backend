@@ -115,11 +115,15 @@ staffSchema.pre("save", async function (next) {
 
 staffSchema.pre("findOneAndUpdate", async function (next) {
   // Hashing Updated Password
-  const update = this.getUpdate();
+  const update = this.getUpdate().$set;
   if (update) {
-    const hashedPassword = await hashPassword(update.password);
-    update.password = hashedPassword;
-    next();
+    try {
+      const hashedPassword = await hashPassword(update.password);
+      update.password = hashedPassword;
+      next();
+    } catch (error) {
+      next(error);
+    }
   }
 });
 
@@ -139,10 +143,11 @@ staffSchema.post("save", async function (doc, next) {
     throw { message: "Unable to Send Mail" };
   } catch (err) {
     // Error Handling
-    const error = { message: "Unable to Send Mail", path: "Email" };
+    const error = { message: err?.message || "Unable to Send Mail", path: "Email" };
 
     // Delete Document if Error Occurs
     await doc.deleteOne({ _id: doc._id });
+
     next(error);
   }
 });

@@ -120,7 +120,7 @@ patientSchema.pre("save", async function (next) {
 
 patientSchema.pre("findOneAndUpdate", async function (next) {
   // Hashing Updated password
-  const update = this.getUpdate();
+  const update = this.getUpdate().$set;
 
   if (update) {
     try {

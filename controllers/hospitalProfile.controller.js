@@ -40,7 +40,7 @@ const deleteProfile = async (req, res, next) => {
     const deletedDetails = await hospitalService.deleteProfile(id);
     res.status(200).json({
       data: deletedDetails,
-      message: "Document Deleted Successfully",
+      message: "Hospital Deleted Successfully",
     });
   } catch (error) {
     const message = error.message;

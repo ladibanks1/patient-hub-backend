@@ -105,7 +105,7 @@ hospitalSchema.pre("save", async function (next) {
 
 hospitalSchema.pre("findOneAndUpdate", async function (next) {
   // Hashing updated Password
-  const update = this.getUpdate();
+  const update = this.getUpdate().$set;
   if (update) {
     try {
       const hashedPassword = await hashPassword(update.password);
