@@ -109,5 +109,18 @@ patientSchema.pre("save" , async function(next){
   this.password = hashedPassword
   next()
 })
+
+patientSchema.pre("findOneAndUpdate" , async function(next){
+  // Hashing Updated password
+  const update = this.getUpdate();
+  
+  if (update) {
+    const hashedPassword = await hashPassword(update.password);
+    update.password = hashedPassword;
+    next();
+  }
+})
+
+
 const patientModel = model("Patient" , patientSchema)
 export default patientModel;

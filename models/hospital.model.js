@@ -95,5 +95,18 @@ hospitalSchema.pre("save", async function (next) {
   this.password = hashedPassword;
   next();
 });
+
+
+hospitalSchema.pre("findOneAndUpdate", async function (next) {
+  // Hashing updated Password
+  const update = this.getUpdate();
+  if (update) {
+    const hashedPassword = await hashPassword(update.password);
+    update.password = hashedPassword;
+    next();
+  }
+});
+
+
 const hospitalModel = model("Hospital", hospitalSchema);
 export default hospitalModel;

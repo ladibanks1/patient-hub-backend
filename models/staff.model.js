@@ -28,7 +28,10 @@ const staffSchema = new Schema({
   email: {
     type: String,
     required: [true, "Please enter your email"],
-    validate: [emailValidator, "Email is not a valid  gmail account, Gmail is required"],
+    validate: [
+      emailValidator,
+      "Email is not a valid  gmail account, Gmail is required",
+    ],
     unique: true,
     trim: true,
     lowercase: true,
@@ -74,13 +77,13 @@ const staffSchema = new Schema({
   ratings: [
     {
       type: Number,
-      validate : {
-        validator: function(value){
-            if(value <= 5) return true
-            return false
+      validate: {
+        validator: function (value) {
+          if (value <= 5) return true;
+          return false;
         },
-        message: () => `Rating must not be greater than five(5)`
-      }
+        message: () => `Rating must not be greater than five(5)`,
+      },
     },
   ],
 });
@@ -108,6 +111,16 @@ staffSchema.pre("save", async function (next) {
   }
 
   next();
+});
+
+staffSchema.pre("findOneAndUpdate", async function (next) {
+  // Hashing Updated Password
+  const update = this.getUpdate();
+  if (update) {
+    const hashedPassword = await hashPassword(update.password);
+    update.password = hashedPassword;
+    next();
+  }
 });
 
 staffSchema.post("save", async function (doc, next) {
