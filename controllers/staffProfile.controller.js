@@ -7,7 +7,7 @@ const profile = async (req, res, next) => {
     const staffDetails = await staffService.profile(id);
     res.status(200).json({
       data: staffDetails,
-      message: "Document Found",
+      message: "Staff Found",
     });
   } catch (error) {
     const message = error.message;
@@ -24,7 +24,7 @@ const updateProfile = async (req, res, next) => {
     const updatedDetails = await staffService.updateProfile(id, data);
     res.status(200).json({
       data: updatedDetails,
-      message: "Document Updated Successfully",
+      message: "Profile Updated Successfully",
     });
   } catch (error) {
     const message = error.message;
@@ -40,7 +40,7 @@ const deleteProfile = async (req, res, next) => {
     const deletedDetails = await staffService.deleteProfile(id);
     res.status(200).json({
       data: deletedDetails,
-      message: "Document Deleted Successfully",
+      message: "Profile Deleted Successfully",
     });
   } catch (error) {
     const message = error.message;

@@ -7,7 +7,7 @@ const profile = async (req , res , next) => {
         const patientDetails = await patientService.profile(id)
         res.status(200).json({
             data: patientDetails,
-            message: "Document Found"
+            message: "Patient Found"
         })
     } catch (error) {
         const message = error.message;
@@ -24,7 +24,7 @@ const updateProfile = async (req , res , next) => {
         const updatedDetails = await patientService.updateProfile(id , data)
         res.status(200).json({
             data: updatedDetails,
-            message: "Document Updated Successfully"
+            message: "Profile Updated Successfully"
         })
     } catch (error) {
         const message = error.message;
@@ -40,7 +40,7 @@ const deleteProfile = async (req , res , next) => {
         const deletedDetails = await patientService.deleteProfile(id)
         res.status(200).json({
             data: deletedDetails,
-            message: "Document Deleted Successfully"
+            message: "Profile Deleted Successfully"
         })
     } catch (error) {
         const message = error.message;
