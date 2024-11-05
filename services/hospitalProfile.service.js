@@ -7,7 +7,10 @@ const profile = async (id) => {
   try {
     const doc = await hospitalModel
       .findById(id)
-      .populate("appointments staffs patients")
+      .populate({
+        path: "staffs patients",
+        select: "first_name last_name email tel position specialism gender DOB",
+      })
       .exec();
     if (doc === null) throw { code: 404, message: "Hospital not found" };
     return doc;
@@ -88,7 +91,7 @@ const rateHospital = async (id, ratings) => {
     throw { message, statusCode };
   }
 };
-
+// Get all doctors in a hospital
 const getHospitalDoctors = async (id) => {
   try {
     const doctors = await staffModel.find({$and: [{ hospital_id : id }, {position : {
@@ -102,10 +105,35 @@ const getHospitalDoctors = async (id) => {
     throw { message, statusCode };
   }
 };
+
+// Get all appointments in a hospital
+const getAppointments = async (id) => {
+  try {
+    const doc = await hospitalModel
+      .findById(id)
+      .populate({
+        path: "appointments",
+        populate: {
+          path: "doctor patient",
+        },
+      })
+      .select("appoinments")
+      .exec();
+    if (doc === null) throw { code: 404, message: "Hospital not found" };
+    return doc;
+  } catch (error) {
+    const message = databaseErrors(error);
+    const statusCode = error?.code || 400;
+    throw { message, statusCode };
+  }
+}
+
+
 export default {
   profile,
   updateProfile,
   deleteProfile,
   rateHospital,
   getHospitalDoctors,
+  getAppointments
 };

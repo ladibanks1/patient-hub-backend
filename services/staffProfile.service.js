@@ -80,4 +80,31 @@ const rateStaff = async (id, ratings) => {
     throw { message, statusCode };
   }
 };
-export default { profile, updateProfile, deleteProfile, rateStaff };
+
+const getAppointments = async (id) => {
+  try {
+    const doc = await staffModel
+      .findById(id)
+      .populate({
+        path: "appointments",
+        populate: {
+          path: "patient hospital",
+        },
+      })
+      .select("appoinments")
+      .exec();
+    if (doc === null) throw { code: 404, message: "Staff not found" };
+    return doc;
+  } catch (error) {
+    const message = databaseErrors(error);
+    const statusCode = error?.code || 400;
+    throw { message, statusCode };
+  }
+};
+export default {
+  profile,
+  updateProfile,
+  deleteProfile,
+  rateStaff,
+  getAppointments,
+};

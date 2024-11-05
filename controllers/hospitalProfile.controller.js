@@ -82,4 +82,21 @@ const getHospitalDoctors = async (req, res, next) => {
     next(err);
   }
 };
-export default { profile, updateProfile, deleteProfile, rateHospital , getHospitalDoctors };
+
+
+const getAppointments = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const appointments = await hospitalService.getAppointments(id);
+    res.status(200).json({
+      data: appointments,
+      message: "Appointments Found",
+    });
+  } catch (error) {
+    const message = error.message;
+    const statusCode = error?.statusCode || 404;
+    const err = new ErrorMessage(message, statusCode);
+    next(err);
+  }
+};
+export default { profile, updateProfile, deleteProfile, rateHospital , getHospitalDoctors , getAppointments };
