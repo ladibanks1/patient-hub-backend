@@ -70,7 +70,6 @@ const staffSchema = new Schema({
   ],
   picture: {
     type: String,
-    required: [true, "Please upload your picture"],
     default:
       "https://res.cloudinary.com/ladibanks1/image/upload/v1730287488/Patient_Hub/jhjonrorgr9auwi9fvf0.png",
   },
