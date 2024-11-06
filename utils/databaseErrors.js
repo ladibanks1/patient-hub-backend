@@ -6,7 +6,7 @@ const databaseErrors = (error) => {
     const key = Object.values(error.errors);
     key.map(({ properties, path , message }) => {
       err.push({
-        message: properties?.message || (message && "Id is required"),
+        message: properties?.message || (message && "Something went wrong Here"),
         path,
       });
     });
