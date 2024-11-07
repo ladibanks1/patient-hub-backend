@@ -10,7 +10,7 @@ const hospitalSignIn = async (req, res, next) => {
     const token = getToken({ id: created._id }); /* Token Creation */
     res
       .status(201)
-      .json({ token, data: created, message: "Hospital Created Successfully" });
+      .json({ token, data: created, message: "Hospital Created Successfully" , userType: "Hospital"});
   } catch (error) {
     const message = error.message;
     const code = error.statusCode;
@@ -33,7 +33,7 @@ const patientSignIn = async (req, res, next) => {
     const token = getToken({ id: created._id }); /* Token Creation */
     res
       .status(201)
-      .json({ token, data: created, message: "User Created Successfully" });
+      .json({ token, data: created, message: "User Created Successfully" , userType: "Patient"});
   } catch (error) {
     // Delete from cloud if err occur
     if (req.file) await cloudinary.uploader.destroy(req?.file?.filename);
@@ -56,6 +56,7 @@ const staffSignIn = async (req, res, next) => {
       token,
       data: created,
       message: "Staff Created Successfully,check your mail for login details",
+      userType: "Staff"
     });
   } catch (error) {
     // Delete from cloud if err occur

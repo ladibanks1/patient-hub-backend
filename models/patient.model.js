@@ -61,7 +61,7 @@ const patientSchema = new Schema({
         if (date > Date.now()) return false;
         return true;
       },
-      message: (props) => `Date of birth is cannot be ahead of current date`,
+      message: (props) => `Date of birth cannot be ahead of current date`,
     },
     required: [true, "Please specify your date of birth"],
   },
