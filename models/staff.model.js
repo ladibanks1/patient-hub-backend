@@ -103,7 +103,7 @@ staffSchema.pre("save", async function (next) {
 
   // Initializing appointment for doctors only
   if (docRegex.test(this.position)) {
-    // Makeing sure the appointment is an array
+    // Making sure the appointment is an array
     if (!this.appointment || !Array.isArray(this.appointment)) {
       this.appointment = [];
     }

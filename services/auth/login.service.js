@@ -29,12 +29,13 @@ const patientLogin = async (credentials) => {
     throw new ErrorMessage(error.message, error?.statusCode || 401);
   }
 };
-const staffLogin = async (credentials) => {
+const doctorLogin = async (credentials) => {
   try {
     // Credentials Verification
 
     const { email, password } = credentials;
-    const isEmailValid = await staffModel.findOne({ email });
+    // Find the staff and check if it a doctor
+    const isEmailValid = await staffModel.findOne({ email  , position: /doctor/i});
     if (isEmailValid) {
       const isPasswordValid = await comparePassword(
         password,
@@ -83,4 +84,4 @@ const hospitaLogin = async (credentials) => {
   }
 };
 
-export default { patientLogin, staffLogin, hospitaLogin };
+export default { patientLogin, doctorLogin, hospitaLogin };
