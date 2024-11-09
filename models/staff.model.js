@@ -49,7 +49,6 @@ const staffSchema = new Schema({
   },
   specialism: {
     type: String,
-    required: [true, "Please specify a Specialism"],
   },
   hospital_id: {
     type: SchemaTypes.ObjectId,
