@@ -42,7 +42,7 @@ const doctorLogin = async (credentials) => {
         isEmailValid.password
       );
 
-      const error = { statusCode: 401, message: "Incorrect Passsword" };
+      const error = { statusCode: 401, message: "Incorrect Password" };
 
       if (isPasswordValid) {
         return isEmailValid;
@@ -69,7 +69,7 @@ const hospitaLogin = async (credentials) => {
         isEmailValid.password
       );
 
-      const error = { statusCode: 401, message: "Incorrect Passsword" };
+      const error = { statusCode: 401, message: "Incorrect Password" };
 
       if (isPasswordValid) {
         return isEmailValid;

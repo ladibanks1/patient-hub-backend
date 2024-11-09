@@ -2,7 +2,7 @@ import resetPassword from "../../services/auth/resetPassword.service.js";
 import ErrorMessage from "../../utils/errorMessage.js";
 import getToken from "../../utils/authJwt.js";
 import resetPasswordMail from "../../utils/resetPasswordMail.js";
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const forgetUserPassword = async (req, res, next) => {
   try {
@@ -30,7 +30,7 @@ const resetUserPassword = async (req, res, next) => {
           password
         );
         res.status(200).json({
-          message: "Password Changed Successfully",
+          message: "Password Changed Successfully, Try Login",
           data: updatedPassword,
         });
       } catch (error) {
