@@ -83,7 +83,6 @@ const getHospitalDoctors = async (req, res, next) => {
   }
 };
 
-
 const getAppointments = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -99,4 +98,29 @@ const getAppointments = async (req, res, next) => {
     next(err);
   }
 };
-export default { profile, updateProfile, deleteProfile, rateHospital , getHospitalDoctors , getAppointments };
+
+// Get All Hospitals
+const getAllHospitals = async (req, res, next) => {
+  try {
+    const hospitals = await hospitalService.getAllHospitals();
+    res.status(200).json({
+      data: hospitals,
+      message: "Hospitals Found",
+    });
+  } catch (error) {
+    const message = error.message;
+    const statusCode = error?.statusCode || 404;
+    const err = new ErrorMessage(message, statusCode);
+    next(err);
+  }
+};
+
+export default {
+  profile,
+  updateProfile,
+  deleteProfile,
+  rateHospital,
+  getHospitalDoctors,
+  getAppointments,
+  getAllHospitals,
+};

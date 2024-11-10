@@ -94,11 +94,18 @@ const rateHospital = async (id, ratings) => {
 // Get all doctors in a hospital
 const getHospitalDoctors = async (id) => {
   try {
-    const doctors = await staffModel.find({$and: [{ hospital_id : id }, {position : {
-      $regex: /doctor/i
-    }}]});
-    if(!doctors) throw { code: 404, message: "Doctors not found" };
-      return doctors;
+    const doctors = await staffModel.find({
+      $and: [
+        { hospital_id: id },
+        {
+          position: {
+            $regex: /doctor/i,
+          },
+        },
+      ],
+    });
+    if (!doctors) throw { code: 404, message: "Doctors not found" };
+    return doctors;
   } catch (error) {
     const message = databaseErrors(error);
     const statusCode = error?.code || 400;
@@ -126,8 +133,21 @@ const getAppointments = async (id) => {
     const statusCode = error?.code || 400;
     throw { message, statusCode };
   }
-}
+};
 
+// Get All Hospitals
+const getAllHospitals = async () => {
+  try {
+    const allHospitals = await hospitalModel.find({});
+    if (allHospitals.length === 0)
+      throw { code: 404, message: "No Hospitals Found" };
+    return allHospitals;
+  } catch (error) {
+    const message = databaseErrors(error);
+    const statusCode = error?.code || 400;
+    throw { message, statusCode };
+  }
+};
 
 export default {
   profile,
@@ -135,5 +155,6 @@ export default {
   deleteProfile,
   rateHospital,
   getHospitalDoctors,
-  getAppointments
+  getAppointments,
+  getAllHospitals,
 };
