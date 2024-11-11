@@ -73,7 +73,7 @@ const deleteAppointment = async (req, res, next) => {
     const appointmentId = req.params.id;
     const isDeleted = await appointmentService.deleteAppointment(appointmentId);
     res.status(200).json({
-      message: "Appointment Completed",
+      message: "Appointment Deleted",
       data: isDeleted,
     });
   } catch (error) {
