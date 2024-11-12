@@ -20,13 +20,22 @@ const profile = async (req, res, next) => {
 const updateProfile = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const data = req.body;
+    const body = req.body;
+    const data = {
+      ...body,
+      picture: req.file?.path,
+    };
     const updatedDetails = await staffService.updateProfile(id, data);
     res.status(200).json({
       data: updatedDetails,
       message: "Profile Updated Successfully",
     });
   } catch (error) {
+    // Delete from cloud if err occur
+    if (req?.file)
+      await cloudinary.uploader.destroy(req?.file?.filename).catch((err) => {
+        throw err.message;
+      });
     const message = error.message;
     const statusCode = error?.statusCode || 404;
     const err = new ErrorMessage(message, statusCode);
@@ -54,7 +63,7 @@ const rateStaff = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { rating } = req.query;
-    const ratings = await staffService.rateStaff(id , rating)
+    const ratings = await staffService.rateStaff(id, rating);
     res.status(200).json({
       data: ratings,
       message: "Thanks for rating us",
@@ -67,8 +76,7 @@ const rateStaff = async (req, res, next) => {
   }
 };
 
-
-const getAppointments = async(req , res , next) => {
+const getAppointments = async (req, res, next) => {
   try {
     const { id } = req.params;
     const appointments = await staffService.getAppointments(id);
@@ -82,6 +90,12 @@ const getAppointments = async(req , res , next) => {
     const err = new ErrorMessage(message, statusCode);
     next(err);
   }
-}
+};
 
-export default { profile, updateProfile, deleteProfile , rateStaff  , getAppointments};
+export default {
+  profile,
+  updateProfile,
+  deleteProfile,
+  rateStaff,
+  getAppointments,
+};
