@@ -33,6 +33,12 @@ const appointmentSchema = new Schema({
   },
   notes: {
     type: String,
+    validate: {
+      validator: function (value) {
+          return value.length < 150;
+      },
+      message: "Notes must not be more than 100 characters",
+    },
     required: [true , "Please explain more about the symptoms"],
   },
   status: {
