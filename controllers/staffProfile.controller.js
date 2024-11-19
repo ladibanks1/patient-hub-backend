@@ -1,5 +1,6 @@
 import staffService from "../services/staffProfile.service.js";
 import ErrorMessage from "../utils/errorMessage.js";
+import { cloudinary } from "../config/cloudinary.config.js";
 
 const profile = async (req, res, next) => {
   try {

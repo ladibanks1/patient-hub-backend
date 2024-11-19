@@ -1,6 +1,6 @@
 import patientService from "../services/patientProfile.service.js";
 import ErrorMessage from "../utils/errorMessage.js";
-
+import { cloudinary } from "../config/cloudinary.config.js";
 const profile = async (req, res, next) => {
   try {
     const { id } = req.params;
