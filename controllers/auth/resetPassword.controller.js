@@ -8,7 +8,7 @@ const forgetUserPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
     const user = await resetPassword.forgetUserPassword(email);
-    const token = getToken({ email: user.email });
+    const token = getToken({ email: user.email } , "2m");
     resetPasswordMail(email, token);
     res.status(200).json({ message: "Reset password link sent to your email, Check your spam box" });
   } catch (error) {

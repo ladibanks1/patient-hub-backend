@@ -9,7 +9,10 @@ const profile = async (id) => {
       .findById(id)
       .populate({
         path: "staffs patients",
-        select: "first_name last_name email tel position specialism gender DOB",
+        select: "first_name last_name email tel position specialism gender DOB ratings",
+        populate: {
+          path: "appointments",
+        }
       })
       .exec();
     if (doc === null) throw { code: 404, message: "Hospital not found" };

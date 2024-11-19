@@ -32,10 +32,13 @@ const updateProfile = async (req, res, next) => {
     });
   } catch (error) {
     // Delete from cloud if err occur
-    if (req?.file)
-      await cloudinary.uploader.destroy(req?.file?.filename).catch((err) => {
-        throw err.message;
-      });
+    if (req?.file) {
+      try {
+        await cloudinary.uploader.destroy(req?.file?.filename);
+      } catch (error) {
+        next(new ErrorMessage("Error in deleting image", 500));
+      }
+    }
     const message = error.message;
     const statusCode = error?.statusCode || 404;
     const err = new ErrorMessage(message, statusCode);
