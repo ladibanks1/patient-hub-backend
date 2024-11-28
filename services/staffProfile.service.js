@@ -6,7 +6,7 @@ const profile = async (id) => {
   try {
     const doc = await staffModel
       .findById(id)
-      .populate("appointments hospital_id")
+      .populate("appointments hospital_id patients")
       .exec();
     if (doc === null) throw { code: 404, message: "Staff not found" };
     return doc;

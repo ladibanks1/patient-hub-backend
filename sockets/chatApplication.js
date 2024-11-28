@@ -5,18 +5,19 @@ const chatApplication = (io, socket) => {
     socket.join(roomName);
     console.log("Room Join Succesfully");
   });
-  socket.on(
-    "send_message",
-    ({ patientId, doctorId, message, senderRole }) => {
-      const chatMessage = {
-        message,
-        senderRole
-      }
-      console.log(chatMessage)
-      const roomId = `${patientId}-${doctorId}`;
-      io.to(roomId).emit("receive_message" , chatMessage)
-    }
-  );
+  socket.on("send_message", ({ patientId, doctorId, message, senderRole }) => {
+    const chatMessage = {
+      message,
+      senderRole,
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+    console.log(chatMessage);
+    const roomId = `${patientId}-${doctorId}`;
+    io.to(roomId).emit("receive_message", chatMessage);
+  });
 
   // Handle user disconnection
   socket.on("disconnect", () => {
