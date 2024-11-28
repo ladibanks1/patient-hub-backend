@@ -23,7 +23,7 @@ const patientSchema = new Schema({
     type: String,
     validate: [
       emailValidator,
-      "Email is not a valid  gmail account, Gooogle Account is required",
+      "Email is not a valid",
     ],
     required: [true, "Please enter your email"],
     trim: true,

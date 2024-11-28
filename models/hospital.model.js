@@ -45,10 +45,7 @@ const hospitalSchema = new Schema({
   },
   email: {
     type: String,
-    validate: [
-      emailValidator,
-      "Email is not a valid  gmail account, Google Account is required",
-    ],
+    validate: [emailValidator, "Email is not a valid"],
     required: [true, "Please enter the hospital email"],
     trim: true,
     unique: true,

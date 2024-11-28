@@ -28,10 +28,7 @@ const staffSchema = new Schema({
   email: {
     type: String,
     required: [true, "Please enter your email"],
-    validate: [
-      emailValidator,
-      "Email is not a valid  gmail account, Gmail is required",
-    ],
+    validate: [emailValidator, "Email is not a valid"],
     unique: true,
     trim: true,
     lowercase: true,
@@ -141,7 +138,10 @@ staffSchema.post("save", async function (doc, next) {
     throw { message: "Unable to Send Mail" };
   } catch (err) {
     // Error Handling
-    const error = { message: err?.message || "Unable to Send Mail", path: "Email" };
+    const error = {
+      message: err?.message || "Unable to Send Mail",
+      path: "Email",
+    };
 
     // Delete Document if Error Occurs
     await doc.deleteOne({ _id: doc._id });
